@@ -1,0 +1,306 @@
+:root {
+  color-scheme: light;
+  --bg:          #f0f4f8;
+  --surface:     #ffffff;
+  --surface-alt: #f8fafc;
+  --text:        #1a202c;
+  --muted:       #4a5568;
+  --border:      #e2e8f0;
+  --success:     #16a34a;
+  --warning:     #d97706;
+  --danger:      #dc2626;
+  --accent:      #1d4ed8;
+  --radius:      18px;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #e8edf5 0%, #f5f7fa 60%);
+  color: var(--text);
+}
+
+.app-shell {
+  width: min(920px, 94%);
+  margin: 0 auto;
+  padding: 32px 0 64px;
+  display: grid;
+  gap: 20px;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+.page-header {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.page-header h1 {
+  margin: 0 0 12px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.page-note {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ── Stats bar ──────────────────────────────────────── */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid currentColor;
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.stat-card.stat-not-started { color: var(--danger); }
+.stat-card.stat-in-progress  { color: var(--warning); }
+.stat-card.stat-complete     { color: var(--success); }
+
+.stat-count {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-label {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+/* ── Search ─────────────────────────────────────────── */
+.search-input {
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+}
+
+/* ── Patient list ───────────────────────────────────── */
+.patient-list { display: grid; gap: 12px; }
+
+.patient-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+
+.patient-card:hover { box-shadow: 0 2px 14px rgba(0,0,0,0.07); }
+
+/* ── Patient summary row ────────────────────────────── */
+.patient-summary {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  transition: background 0.12s;
+}
+
+.patient-summary:hover { background: #fafbfc; }
+.patient-summary:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.patient-name {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.patient-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 10px;
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+/* Chip styles */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background: #eef2ff;
+  color: #3730a3;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.chip.chip-danger  { background: #fef2f2; color: var(--danger); font-weight: 600; }
+.chip.chip-warning { background: #fffbeb; color: var(--warning); font-weight: 600; }
+.chip.chip-muted   { background: #f1f5f9; color: #64748b; }
+
+/* Progress pill badge */
+.progress-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+}
+
+.status-not-started { background: var(--danger); }
+.status-in-progress  { background: var(--warning); }
+.status-complete     { background: var(--success); }
+
+/* Thin progress bar strip under summary */
+.progress-track {
+  height: 3px;
+  background: #edf2f7;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 0.35s ease;
+}
+
+/* ── Expandable checklist ───────────────────────────── */
+.patient-details {
+  display: none;
+  border-top: 1px solid var(--border);
+  background: var(--surface-alt);
+  padding: 20px 24px 24px;
+}
+
+.patient-details.active { display: block; }
+
+.checklist { display: grid; gap: 10px; }
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.checklist-item:hover { background: #fafbfc; }
+
+.checklist-item input[type="checkbox"] {
+  margin-top: 2px;
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.checklist-item-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+  transition: color 0.15s;
+}
+
+.checklist-item.completed .checklist-item-text {
+  text-decoration: line-through;
+  color: #a0aec0;
+}
+
+.checklist-footer {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reset-btn {
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  color: #a0aec0;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.12s;
+  padding: 0;
+}
+
+.reset-btn:hover { color: var(--danger); }
+
+.no-patients {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+}
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .app-shell     { padding: 14px 0 48px; width: 96%; }
+  .page-header   { padding: 20px 18px; }
+  .stat-count    { font-size: 1.6rem; }
+  .stat-card     { padding: 14px 16px; }
+
+  .patient-summary {
+    grid-template-columns: 1fr;
+    padding: 16px 18px;
+    gap: 10px;
+  }
+
+  .patient-details { padding: 16px 18px 20px; }
+
+  .progress-pill {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+}

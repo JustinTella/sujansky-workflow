@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Medicine Workflow</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+
+    <header class="page-header">
+      <div class="header-text">
+        <p class="eyebrow">Concierge Travel Medicine</p>
+        <h1>Patient Workflow Dashboard</h1>
+      </div>
+      <p class="page-note">
+        Patient data is pulled from the practice's Google Form response sheet on
+        page load. Falls back to sample records when the sheet is offline or
+        inaccessible.
+      </p>
+    </header>
+
+    <!-- Summary counts -->
+    <div class="stats-bar" id="stats-bar"></div>
+
+    <!-- Search -->
+    <div class="list-controls">
+      <input
+        id="search"
+        type="search"
+        placeholder="Search by patient name or destination…"
+        class="search-input"
+        oninput="onSearch()"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Patient rows -->
+    <section>
+      <div id="patient-list" class="patient-list"></div>
+    </section>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
