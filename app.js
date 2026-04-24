@@ -69,7 +69,10 @@ const CHECKLIST = [
   { text: "Schedule patient appointment for pre-travel consultation and vaccine administration",
     note: "Schedule once vaccines have arrived" },
   { text: "Write and order prescriptions" },
-  { text: "Assemble travel kit" },
+  {
+    text: "Assemble travel kit",
+    link: { href: "file:///C:/Users/jtell/Downloads/travel_kit.html", label: "Open travel kit menu ↗" },
+  },
   { text: "Conduct patient appointment, administer vaccines, assign prescriptions, and provide the travel kit" },
   { text: "Schedule any follow-ups if necessary" },
   { text: "Mark patient cleared for travel" },
