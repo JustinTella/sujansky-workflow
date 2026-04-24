@@ -299,6 +299,30 @@ body {
   transition: color 0.15s;
 }
 
+.checklist-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  background: rgba(37, 99, 235, 0.08);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  width: fit-content;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.checklist-link:hover {
+  background: rgba(37, 99, 235, 0.14);
+  border-color: rgba(37, 99, 235, 0.28);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
 .checklist-item.completed .checklist-item-text {
   text-decoration: line-through;
   color: #a0aec0;
@@ -321,8 +345,8 @@ body {
 
 /* ── Patient info sections (itinerary, purpose, concerns) ────── */
 .patient-info-section {
-  margin-bottom: 18px;
-  padding-bottom: 18px;
+  margin-bottom: 22px;
+  padding-bottom: 22px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -332,26 +356,32 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--accent);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
-.info-row {
+.itinerary-subtitle {
   display: flex;
-  gap: 12px;
-  font-size: 0.88rem;
-  margin-bottom: 4px;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
-.info-label {
+.itinerary-subtitle-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--muted);
-  min-width: 90px;
-  font-weight: 500;
 }
 
 .itinerary-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.86rem;
+  font-size: 0.9rem;
+  margin-bottom: 18px;
 }
 
 .itinerary-table th {
@@ -361,17 +391,59 @@ body {
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  padding: 4px 10px 6px 0;
+  padding: 6px 18px 10px 0;
   border-bottom: 1px solid var(--border);
 }
 
 .itinerary-table td {
-  padding: 6px 10px 6px 0;
+  padding: 11px 18px 11px 0;
   border-bottom: 1px solid var(--surface-alt);
   vertical-align: top;
 }
 
 .itinerary-table tr:last-child td { border-bottom: none; }
+
+.itinerary-primary {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.itinerary-secondary,
+.itinerary-date {
+  color: #24364d;
+  font-weight: 500;
+}
+
+.itinerary-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.fact-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.fact-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.fact-value {
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 700;
+  color: var(--text);
+}
 
 .patient-concerns {
   background: #fffbeb;

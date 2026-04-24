@@ -61,13 +61,16 @@ const SHEET_URL =
 // ═══════════════════════════════════════════════════════════════════
 
 const CHECKLIST = [
-  { text: "Doctor puts patient internally into Travel X and generate report" },
+  {
+    text: "Enter patient in Travax and generate report",
+    link: { href: "https://www.travax.com/", label: "Open Travax ↗" },
+  },
   { text: "Determine and order recommended vaccines" },
   { text: "Schedule patient appointment for pre-travel consultation and vaccine administration",
     note: "Schedule once vaccines have arrived" },
   { text: "Write and order prescriptions" },
   { text: "Assemble travel kit" },
-  { text: "Conduct consultation" },
+  { text: "Conduct patient appointment, administer vaccines, assign prescriptions, and provide the travel kit" },
   { text: "Schedule any follow-ups if necessary" },
   { text: "Mark patient cleared for travel" },
 ];
@@ -131,7 +134,7 @@ function departureChip(p) {
   if (days < 0)      return `<span class="chip chip-muted">Departed</span>`;
   if (days === 0)    return `<span class="chip chip-danger">Departs today!</span>`;
   if (days <= 7)     return `<span class="chip chip-danger">Departs in ${days}d</span>`;
-  if (days <= 21)    return `<span class="chip chip-warning">Departs in ${days}d</span>`;
+  if (days <= 30)    return `<span class="chip chip-warning">Departs in ${days}d</span>`;
   return `<span class="chip chip-muted">Departs ${fmtDate(dateStr)}</span>`;
 }
 
@@ -286,6 +289,7 @@ function renderItinerary(p) {
   return `
     <div class="patient-info-section">
       <div class="info-section-title">Itinerary — ${n} ${n === 1 ? "country" : "countries"}</div>
+      ${p.purpose ? `<div class="itinerary-subtitle"><span class="itinerary-subtitle-label">Purpose</span><strong>${p.purpose}</strong></div>` : ""}
       <table class="itinerary-table">
         <thead>
           <tr>
@@ -298,23 +302,20 @@ function renderItinerary(p) {
         <tbody>
           ${p.stops.map(s => `
             <tr>
-              <td>${s.country || "—"}</td>
-              <td>${s.city    || "—"}</td>
-              <td>${fmtDate(s.arrival)}</td>
-              <td>${fmtDate(s.departure)}</td>
+              <td class="itinerary-primary">${s.country || "—"}</td>
+              <td class="itinerary-secondary">${s.city || "—"}</td>
+              <td class="itinerary-date">${fmtDate(s.arrival)}</td>
+              <td class="itinerary-date">${fmtDate(s.departure)}</td>
             </tr>`).join("")}
         </tbody>
       </table>
-      ${p.returnDate ? `
-        <div class="info-row">
-          <span class="info-label">Return date</span>
-          <span>${fmtDate(p.returnDate)}</span>
-        </div>` : ""}
-      ${p.purpose ? `
-        <div class="info-row">
-          <span class="info-label">Purpose</span>
-          <span>${p.purpose}</span>
-        </div>` : ""}
+      <div class="itinerary-facts">
+        ${p.returnDate ? `
+          <div class="fact-card">
+            <span class="fact-label">Return date</span>
+            <span class="fact-value">${fmtDate(p.returnDate)}</span>
+          </div>` : ""}
+      </div>
     </div>`;
 }
 
@@ -346,7 +347,6 @@ function renderPatients() {
           <span class="chip chip-countries">${n} ${n === 1 ? "country" : "countries"}</span>
           <span class="dest-label">${destinationLabel(p.stops)}</span>
           ${departureChip(p)}
-          ${p.returnDate ? `<span class="chip chip-muted">Returns ${fmtDate(p.returnDate)}</span>` : ""}
         </div>
       </div>
       <div>
@@ -382,6 +382,7 @@ function renderPatients() {
           <input type="checkbox" data-patient-id="${p.id}" data-task-index="${i}" ${checked ? "checked" : ""} />
           <span class="checklist-item-text">
             ${task.text}
+            ${task.link ? `<a class="checklist-link" href="${task.link.href}" target="_blank" rel="noopener noreferrer">${task.link.label}</a>` : ""}
             ${task.note ? `<span class="checklist-note">⚠ ${task.note}</span>` : ""}
           </span>
         </label>`;
@@ -492,6 +493,10 @@ function attachEvents() {
       updatePatientProgress(patientId, state);
       renderStats();
     });
+  });
+
+  document.querySelectorAll(".checklist-link").forEach(link => {
+    link.addEventListener("click", e => e.stopPropagation());
   });
 
   document.querySelectorAll(".reset-btn").forEach(btn => {
