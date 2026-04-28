@@ -54,6 +54,7 @@
 
 const SHEET_ID  = "1og96N5wkXKgoJu-28UaNm4r-uMaVYi3vTEGmXdiH2bM";
 const SHEET_GID = "658794948";
+const PRACTICE_ID = "sujansky";
 const SHEET_URL =
   `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
 
@@ -86,8 +87,8 @@ let patients   = [];
 let expandedId = null;
 
 // ── Persistence ──────────────────────────────────────────────────
-const STORAGE_KEY = "travelMedicineChecklistState_v2";
-const ARCHIVE_KEY = "travelMedicineArchiveState_v1";
+const STORAGE_KEY = "travelMedicineChecklistState_v3";
+const ARCHIVE_KEY = "travelMedicineArchiveState_v2";
 
 function loadState() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
@@ -695,7 +696,7 @@ function parseSheetRows(table) {
     const numCountries = stops.length;
 
     return {
-      id: `sheet-${name.replace(/\s+/g, "-").toLowerCase()}-${i}`,
+      id: `${PRACTICE_ID}-sheet-${name.replace(/\s+/g, "-").toLowerCase()}-${i}`,
       name, purpose, returnDate, submitted, stops, numCountries,
     };
   });

@@ -134,7 +134,7 @@
       if (!stops.length) stops = [{ country: "Unknown", city: "", arrival: "", departure: "" }];
 
       return {
-        id: `sheet-${name.replace(/\s+/g, "-").toLowerCase()}-${i}`,
+        id: `${PRACTICE_ID}-sheet-${name.replace(/\s+/g, "-").toLowerCase()}-${i}`,
         name,
         purpose,
         returnDate,
