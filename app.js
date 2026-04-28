@@ -71,7 +71,7 @@ const CHECKLIST = [
     note: "Schedule once vaccines have arrived" },
   { text: "Write and order prescriptions" },
   {
-    html: `Assemble <a class="checklist-link" href="file:///C:/Users/jtell/Downloads/travel_kit.html" target="_blank" rel="noopener noreferrer">travel kit</a>`,
+    html: `Assemble <a class="checklist-link" href="https://justintella.github.io/blue-angel-intranet/travel_kit.html" target="_blank" rel="noopener noreferrer">travel kit</a>`,
   },
   { text: "Conduct patient appointment, administer vaccines, assign prescriptions, and provide the travel kit" },
   { text: "Schedule any follow-ups if necessary" },
