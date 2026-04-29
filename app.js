@@ -50,6 +50,7 @@
 //     62, 64, 65, 66, 67 → stop 1–4 plus additional cities
 //
 //   47 → Concerns / questions
+//   68 → Select all that apply to your travel
 // ═══════════════════════════════════════════════════════════════════
 
 const SHEET_ID  = "1og96N5wkXKgoJu-28UaNm4r-uMaVYi3vTEGmXdiH2bM";
@@ -89,6 +90,8 @@ let expandedId = null;
 // ── Persistence ──────────────────────────────────────────────────
 const STORAGE_KEY = "travelMedicineChecklistState_v3";
 const ARCHIVE_KEY = "travelMedicineArchiveState_v2";
+const CONCERNS_COL = 47;
+const TRAVEL_FLAGS_COL = 68;
 
 function loadState() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
@@ -125,6 +128,23 @@ function fmtDate(dateStr) {
   return isNaN(d) ? dateStr : d.toLocaleDateString(undefined, {
     year: "numeric", month: "short", day: "numeric",
   });
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[ch]));
+}
+
+function parseTravelSelections(rawValue) {
+  return String(rawValue ?? "")
+    .split(/,\s+(?=Will you\b|Other\b)/)
+    .map(value => value.trim())
+    .filter(Boolean);
 }
 
 function firstDeparture(p) {
@@ -289,6 +309,8 @@ function getFilteredSorted() {
 function renderItinerary(p) {
   if (!p.stops || !p.stops.length) return "";
   const n = p.numCountries || countryCount(p.stops);
+  const selections = Array.isArray(p.travelSelections) ? p.travelSelections : [];
+  const comments = String(p.concerns ?? "").trim();
 
   return `
     <div class="patient-info-section">
@@ -314,6 +336,18 @@ function renderItinerary(p) {
         </tbody>
       </table>
       <div class="itinerary-facts">
+        ${selections.length ? `
+          <div class="fact-card fact-card-wide">
+            <span class="fact-label">Select all that apply</span>
+            <div class="travel-flags-list">
+              ${selections.map(item => `<div class="travel-flag">${escapeHtml(item)}</div>`).join("")}
+            </div>
+          </div>` : ""}
+        ${comments ? `
+          <div class="fact-card fact-card-wide">
+            <span class="fact-label">Any more details or questions surrounding your travel the office should be aware of?</span>
+            <div class="travel-comments-copy">${escapeHtml(comments).replace(/\r?\n/g, "<br />")}</div>
+          </div>` : ""}
         ${p.returnDate ? `
           <div class="fact-card">
             <span class="fact-label">Return date</span>
@@ -656,6 +690,8 @@ function parseSheetRows(table) {
     const submitted = pd(0);
     const name      = formatName(get(1));
     const purpose   = str(3);
+    const concerns  = str(CONCERNS_COL);
+    const travelSelections = parseTravelSelections(str(TRAVEL_FLAGS_COL));
 
     const explicitCount = normalizeCountryCount(get(2));
     const inferredLayout = layouts.find(layout => layout.matches(str)) || layouts.at(-1);
@@ -701,7 +737,7 @@ function parseSheetRows(table) {
 
     return {
       id: `${PRACTICE_ID}-sheet-${name.replace(/\s+/g, "-").toLowerCase()}-${i}`,
-      name, purpose, returnDate, submitted, stops, numCountries,
+      name, purpose, returnDate, submitted, stops, numCountries, concerns, travelSelections,
     };
   });
 }

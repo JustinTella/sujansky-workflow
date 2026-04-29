@@ -3,6 +3,8 @@
   const PRACTICE_LABEL = "Sujansky";
   const SHEET_ID = "1og96N5wkXKgoJu-28UaNm4r-uMaVYi3vTEGmXdiH2bM";
   const SHEET_GID = "658794948";
+  const CONCERNS_COL = 47;
+  const TRAVEL_FLAGS_COL = 68;
 
   function parseDateValue(v) {
     if (!v && v !== 0) return "";
@@ -26,6 +28,13 @@
     if (numeric >= 1 && numeric <= 9) return numeric;
     if (raw.includes("more than 4") || raw.includes("5")) return 5;
     return 0;
+  }
+
+  function parseTravelSelections(rawValue) {
+    return String(rawValue ?? "")
+      .split(/,\s+(?=Will you\b|Other\b)/)
+      .map(value => value.trim())
+      .filter(Boolean);
   }
 
   function parseSheetRows(table) {
@@ -94,6 +103,8 @@
       const submitted = pd(0);
       const name = formatName(get(1));
       const purpose = str(3);
+      const concerns = str(CONCERNS_COL);
+      const travelSelections = parseTravelSelections(str(TRAVEL_FLAGS_COL));
 
       const explicitCount = normalizeCountryCount(get(2));
       const inferredLayout = layouts.find(layout => layout.matches(str)) || layouts.at(-1);
@@ -141,6 +152,8 @@
         submitted,
         stops,
         numCountries: stops.length,
+        concerns,
+        travelSelections,
       };
     });
   }
