@@ -31,14 +31,14 @@
 //     12–14 → Stop 1
 //     15–17 → Stop 2
 //     18–20 → Stop 3
-//     50, 56, 60 → stop 1–3 cities
+//     50, 56, 60 → stop 1–3 city/region/area fields
 //
 //   4 countries:
 //     21–23 → Stop 1
 //     24–26 → Stop 2
 //     27–29 → Stop 3
 //     30–32 → Stop 4
-//     58, 59, 57, 61 → stop 1–4 cities
+//     58, 59, 57, 61 → stop 1–4 city/region/area fields
 //
 //   5+ countries:
 //     33–35 → Stop 1
@@ -47,7 +47,7 @@
 //     42–44 → Stop 4
 //     45    → Additional countries (free text)
 //     46    → Additional date ranges (free text)
-//     62, 64, 65, 66, 67 → stop 1–4 plus additional cities
+//     62, 64, 65, 66, 67 → stop 1–4 plus additional city/region/area fields
 //
 //   47 → Concerns / questions
 //   68 → Select all that apply to your travel
@@ -320,7 +320,7 @@ function renderItinerary(p) {
         <thead>
           <tr>
             <th>Country</th>
-            <th>City / Region</th>
+            <th>City / Region / Area</th>
             <th>Arrival</th>
             <th>Departure</th>
           </tr>
