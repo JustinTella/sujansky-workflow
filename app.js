@@ -223,9 +223,15 @@ function renderChecklistTask(task, index, patient) {
   return task.html ?? task.text;
 }
 
+function isTaskChecked(patient, taskIndex, state) {
+  if (taskIndex === 4) return isTravelKitApproved(patient);
+  return !!(state[patient.id] || {})[taskIndex];
+}
+
 function getProgress(patientId, state) {
+  const patient = patients.find(entry => entry.id === patientId);
   const ps    = state[patientId] || {};
-  const done  = CHECKLIST.filter((_, i) => ps[i]).length;
+  const done  = CHECKLIST.filter((_, i) => patient ? isTaskChecked(patient, i, state) : ps[i]).length;
   const total = CHECKLIST.length;
   const pct   = Math.round(done / total * 100);
   if (done === 0)     return { label: "Not started", cls: "status-not-started", done, total, pct };
@@ -464,10 +470,11 @@ function renderPatients() {
 
     <div class="checklist">
       ${CHECKLIST.map((task, i) => {
-        const checked = !!ps[i];
+        const checked = isTaskChecked(p, i, state);
+        const isTravelKitTask = i === 4;
         return `
         <label class="checklist-item${checked ? " completed" : ""}">
-          <input type="checkbox" data-patient-id="${p.id}" data-task-index="${i}" ${checked ? "checked" : ""} />
+          <input type="checkbox" data-patient-id="${p.id}" data-task-index="${i}" ${checked ? "checked" : ""} ${isTravelKitTask ? 'data-approval-driven="true" disabled' : ""} />
           <span class="checklist-item-text">
             ${renderChecklistTask(task, i, p)}
             ${task.note ? `<span class="checklist-note">⚠ ${task.note}</span>` : ""}
@@ -539,6 +546,14 @@ function updatePatientProgress(patientId, state) {
     approvalPill.classList.toggle("approval-pill-approved", approved);
     approvalPill.classList.toggle("approval-pill-pending", !approved);
   }
+
+  const travelKitCheckbox = card.querySelector('input[data-task-index="4"]');
+  if (travelKitCheckbox && patient) {
+    const approved = isTravelKitApproved(patient);
+    travelKitCheckbox.checked = approved;
+    travelKitCheckbox.disabled = true;
+    travelKitCheckbox.closest(".checklist-item")?.classList.toggle("completed", approved);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -580,6 +595,12 @@ function attachEvents() {
     cb.addEventListener("change", () => {
       const patientId = cb.dataset.patientId;
       const taskIndex = Number(cb.dataset.taskIndex);
+      if (taskIndex === 4) {
+        const patient = patients.find(entry => entry.id === patientId);
+        cb.checked = patient ? isTravelKitApproved(patient) : false;
+        cb.disabled = true;
+        return;
+      }
       const state     = loadState();
 
       if (!state[patientId]) state[patientId] = {};
@@ -611,8 +632,11 @@ function attachEvents() {
       const details = document.getElementById(`details-${patientId}`);
       if (details) {
         details.querySelectorAll(".checklist-item").forEach(item => {
+          const input = item.querySelector("input");
+          const taskIndex = Number(input?.dataset.taskIndex);
+          if (taskIndex === 4) return;
           item.classList.remove("completed");
-          item.querySelector("input").checked = false;
+          input.checked = false;
         });
       }
 
