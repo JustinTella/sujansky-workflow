@@ -182,7 +182,7 @@ function travelLocationsParam(stops) {
 
 function buildTravelKitUrl(patient) {
   const url = new URL("https://justintella.github.io/blue-angel-intranet/travel_kit.html");
-  url.searchParams.set("view", "staff");
+  url.searchParams.set("view", "doctor");
   url.searchParams.set("patientId", patient.id);
   url.searchParams.set("patient", patient.name);
   url.searchParams.set("practice", PRACTICE_ID);
