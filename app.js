@@ -370,7 +370,6 @@ function renderItinerary(p) {
   return `
     <div class="patient-info-section">
       <div class="info-section-title">Itinerary — ${n} ${n === 1 ? "country" : "countries"}</div>
-      ${p.purpose ? `<div class="itinerary-subtitle"><span class="itinerary-subtitle-label">Purpose</span><strong>${p.purpose}</strong></div>` : ""}
       <table class="itinerary-table">
         <thead>
           <tr>
